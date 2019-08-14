@@ -1,10 +1,5 @@
-'''
-@Description: In User Settings Edit
-@Author: your name
-@Date: 2019-08-14 15:37:45
-@LastEditTime: 2019-08-14 15:39:01
-@LastEditors: Please set LastEditors
-'''
+
+
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 from keras.preprocessing.text import Tokenizer
@@ -128,29 +123,26 @@ class TextCNNClassifier(object):
                         padding='valid',
                         kernel_initializer='normal',
                         activation='relu')(reshape)
-        drop_0=Dropout(0.25)(conv_0)
         conv_1 = Conv2D(num_filters,
                         kernel_size=(filter_sizes[1], EMBEDDING_DIM),
                         padding='valid',
                         kernel_initializer='normal',
                         activation='relu')(reshape)
-        drop_1=Dropout(0.25)(conv_1)
         conv_2 = Conv2D(num_filters,
                         kernel_size=(filter_sizes[2],
                                      EMBEDDING_DIM),
                         padding='valid',
                         kernel_initializer='normal',
                         activation='relu')(reshape)
-        drop_2 = Dropout(0.25)(conv_2)
         maxpool_0 = MaxPool2D(pool_size=(MAX_SEQUENCE_LENGTH - filter_sizes[0] + 1, 1),
                               strides=(1, 1),
-                              padding='valid')(drop_0)
+                              padding='valid')(conv_0)
         maxpool_1 = MaxPool2D(pool_size=(MAX_SEQUENCE_LENGTH - filter_sizes[1] + 1, 1),
                               strides=(1, 1),
-                              padding='valid')(drop_1)
+                              padding='valid')(conv_1)
         maxpool_2 = MaxPool2D(pool_size=(MAX_SEQUENCE_LENGTH - filter_sizes[2] + 1, 1),
                               strides=(1, 1),
-                              padding='valid')(drop_2)
+                              padding='valid')(conv_2)
 
         concatenated_tensor = Concatenate(axis=1)([maxpool_0, maxpool_1, maxpool_2])
         flatten = Flatten()(concatenated_tensor)
