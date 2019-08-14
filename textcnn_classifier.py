@@ -115,7 +115,7 @@ class TextCNNClassifier(object):
                               output_dim=EMBEDDING_DIM,
                               weights=[self.embeddings_matrix],
                               input_length=MAX_SEQUENCE_LENGTH,
-                              trainable=True)(inputs)#可以设置词向量是否需要训练
+                              trainable=True)(inputs)
         reshape = Reshape((MAX_SEQUENCE_LENGTH, EMBEDDING_DIM, 1))(embedding)
 
         conv_0 = Conv2D(num_filters,
